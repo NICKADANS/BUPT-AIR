@@ -8,13 +8,13 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-@IdClass(RecordPrimaryKey.class)
 @ApiModel(value = "Room-Record", description = "房间记录示例")
 public class Record {
     @Id
-    private int roomid;                 //房间号，主键
-    @Id
-    private Timestamp opttime;          //操作时刻，主键
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long recordId;              //记录ID
+    private int roomid;                 //房间号
+    private Timestamp opttime;          //操作时刻
     private boolean isOccupied;         //房间是否空闲
     private float localTemp;            //当前温度
     private float targetTemp;           //目标温度
