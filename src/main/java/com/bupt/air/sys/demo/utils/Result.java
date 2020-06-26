@@ -48,6 +48,15 @@ public class Result<T> implements Serializable {
         return r;
     }
 
+    public static Result<Object> ok(Object data, String msg) {
+        Result<Object> r = new Result<Object>();
+        r.setSuccess(true);
+        r.setCode(SC_OK_200);
+        r.setResult(data);
+        r.setMessage(msg);
+        return r;
+    }
+
     public static Result<Object> error(String msg) {
         return error(SC_INTERNAL_SERVER_ERROR_500, msg);
     }
