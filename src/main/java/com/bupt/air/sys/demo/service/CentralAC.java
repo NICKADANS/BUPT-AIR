@@ -107,23 +107,32 @@ public class CentralAC {
     //新增一个房间
     public boolean addNewRoom(Room r) {
         //判断是否房间号冲突
-        for(int i = 0; i<rooms.size(); i++){
-            if(rooms.get(i).getRoomid() == r.getRoomid()){
-                return false;
-            }
+        int i = findRoom(r.getRoomid());
+        //已经存在该房间
+        if(i != -1){
+            return false;
         }
         rooms.add(r);
         return true;
     }
 
     public boolean setRoom(Room r){
-        for(int i = 0; i<rooms.size();i++){
-            if(rooms.get(i).getRoomid() == r.getRoomid()){
-                rooms.set(i, r);
-                return true;
-            }
+        //判断是否房间号冲突
+        int i = findRoom(r.getRoomid());
+        if(i != -1){
+            rooms.set(i, r);
+            return true;
         }
         return false;
+    }
+
+    public int findRoom(int roomid){
+        for(int i = 0; i<rooms.size(); i++){
+            if(rooms.get(i).getRoomid() == roomid){
+                return i;
+            }
+        }
+        return -1;
     }
 
     //为服务队列中每个房间的服务时间加1秒
