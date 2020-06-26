@@ -150,6 +150,38 @@ public class MasterController {
         }
     }
 
+    @ApiOperation(value = "管理员开启房间空调")
+    @PostMapping(path = "/turnonair", produces = "application/json")
+    public Result<?> turnOnAir(@RequestBody Map<String,String> param){
+        int roomid = Integer.parseInt(param.get("roomid"));
+        List<Room> rooms = centralAC.getRooms();
+        int i = centralAC.findRoom(roomid);
+        //如果两次请求间隔小于1s，拒绝服务
+//        if(room.getAutoUpdateTime() < 2 && room.getWaitingTime() < 2){
+//            return new ResponseEntity<Room>(HttpStatus.FORBIDDEN);
+//        }
+        //如果房间号错误
+        if(i == -1){
+            return Result.error("房间id不存在!");
+        }
+        else {
+            Room room = rooms.get(i);
+            //将房间从当前服务队列中移除
+            centralAC.removeRoominRequestQueue(roomid);
+            //重置目标状态模式和等待时间
+            room.setState("IDLE");
+            room.setWaitingTime(0);
+            room.setIdleUpdateTime(0);
+            room.setAutoUpdateTime(0);
+            //根据处理结果刷新服务器
+            centralAC.setRoom(room);
+            //将请求记录存入数据库
+            Record record = new Record(room, "MASTER");
+            recordRepository.save(record);
+            return Result.ok(room, "操作成功!");
+        }
+    }
+
     @ApiOperation(value = "管理员关闭房间空调")
     @PostMapping(path = "/turnoffair", produces = "application/json")
     public Result<?> turnOffAir(@RequestBody Map<String,String> param){
