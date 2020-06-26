@@ -106,23 +106,25 @@ public class CentralAC {
 
     //新增一个房间
     public boolean addNewRoom(Room r) {
-        if(rooms.get(r.getRoomid()) != null) {
-            System.out.println(rooms.get(r.getRoomid()));
-            return false;
+        //判断是否房间号冲突
+        for(int i = 0; i<rooms.size(); i++){
+            if(rooms.get(i).getRoomid() == r.getRoomid()){
+                return false;
+            }
         }
         rooms.add(r);
-        return false;
-    }
-
-    public boolean setRoom(Room r){
-        int roomid = r.getRoomid();
-        if(rooms.get(roomid) == null){
-            return false;
-        }
-        rooms.set(roomid,r);
         return true;
     }
 
+    public boolean setRoom(Room r){
+        for(int i = 0; i<rooms.size();i++){
+            if(rooms.get(i).getRoomid() == r.getRoomid()){
+                rooms.set(i, r);
+                return true;
+            }
+        }
+        return false;
+    }
 
     //为服务队列中每个房间的服务时间加1秒
     public void updateRequestQueueServingTime(){

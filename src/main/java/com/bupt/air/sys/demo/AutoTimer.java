@@ -24,16 +24,17 @@ public class AutoTimer {
         float min_winrate = centralAC.getRequest_min_winrate();
         int timeslice = centralAC.getRequest_waittime();
         int queue_max_size = centralAC.getRequest_queue_size();
+        System.out.println(centralAC.getTemp_high() + ", " + centralAC.getTemp_low());
+        System.out.println(min_winrate + ", " + timeslice + ", " + queue_max_size);
         //调试房间信息
         if(rooms.size() == 0){
-            System.out.println(min_winrate + ", " + timeslice + ", " + queue_max_size);
             System.out.println("Now rooms is NULL!!");
             return;
         }
         //为每个请求队列中的请求增加1s服务时间
         centralAC.updateRequestQueueServingTime();
         //修改每个房间的状态
-        System.out.println("request queue's size :" + centralAC.getRequest_queue().size());
+        System.out.println("now request queue's size :" + centralAC.getRequest_queue().size());
         for(int i = 0; i<rooms.size();i++){
             Room room = rooms.get(i);
             int waitTime = room.getWaitingTime();

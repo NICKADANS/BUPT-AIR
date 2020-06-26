@@ -29,15 +29,20 @@ public class MasterController {
     public Result<?> addNewRoom(@RequestBody Map<String,String> param){
         String roomid = param.get("roomid");
         String inittemp = param.get("inittemp");
+        System.out.println(roomid);
+        System.out.println(inittemp);
         //初始化一个新房间
         Room room = new Room(Integer.valueOf(roomid), Float.valueOf(inittemp));
-        //生成操作记录
-        Record record = new Record(room, "MASTER");
-        recordRepository.save(record);
         //服务器房间数组新增一个房间
         boolean isAddOk = centralAC.addNewRoom(room);
         if(!isAddOk) {
+            //房间id已存在
             return Result.error(400, "房间已存在!");
+        }
+        else{
+            //生成操作记录
+            Record record = new Record(room, "MASTER");
+            recordRepository.save(record);
         }
         return Result.ok(room, "操作成功");
     }
