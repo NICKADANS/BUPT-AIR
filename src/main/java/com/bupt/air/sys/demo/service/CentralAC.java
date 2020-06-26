@@ -12,7 +12,7 @@ public class CentralAC {
     String state;                           //中央空调状态：OFF、ON
     float temp_low;                         //房间最低温度
     float temp_high;                        //房间最高温度
-    float temp_default;                     //默认室温
+    float temp_default;                     //制热/制冷分界线
     Queue<RoomRequest> request_queue;       //服务队列
     int request_queue_size;                 //服务队列的大小，默认为5
     int request_waittime;                   //服务的时间片，默认为10s

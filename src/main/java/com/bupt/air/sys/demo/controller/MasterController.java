@@ -199,8 +199,10 @@ public class MasterController {
     @PostMapping(path = "/setairparam", produces = "application/json")
     public Result<?> setAirParam(@RequestBody Map<String,String> param){
         String lower = param.get("lower");      //最低温度
+        String deafulttemp = param.get("defaulttemp");
         String higher = param.get("higher");    //最高温度
         String state = param.get("state");      //中央空调开关
+        centralAC.setTemp_default(Float.parseFloat(deafulttemp));
         centralAC.setTemp_low(Float.parseFloat(lower));
         centralAC.setTemp_low(Float.parseFloat(higher));
         centralAC.setState(state);
