@@ -248,9 +248,6 @@ public class Room {
     }
 
 
-    public boolean isCheckOut(){
-        return (isOccupied);
-    }
 
     public void CheckIn(Timestamp present){
         isOccupied = false;
