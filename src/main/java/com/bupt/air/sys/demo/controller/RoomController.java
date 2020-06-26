@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
 @Api(value = "User Controller")
@@ -30,7 +27,8 @@ public class RoomController {
 
     @ApiOperation(value = "用户获取指定房间信息")
     @PostMapping(path = "/roominfo", produces = "application/json")
-    public Result<?> printRoomInfo(@RequestParam("roomid") int roomid){
+    public Result<?> printRoomInfo(@RequestBody Map<String,String> param){
+        int roomid = Integer.parseInt(param.get("roomid"));
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         if(i == -1) {
