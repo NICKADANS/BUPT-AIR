@@ -1,6 +1,7 @@
 package com.bupt.air.sys.demo.controller;
 
 import com.bupt.air.sys.demo.entity.Check;
+import com.bupt.air.sys.demo.entity.DetailedCheck;
 import com.bupt.air.sys.demo.entity.Room;
 import com.bupt.air.sys.demo.service.CentralAC;
 import com.bupt.air.sys.demo.service.FrontService;
@@ -31,7 +32,7 @@ public class FrontController {
         Timestamp present = new Timestamp(System.currentTimeMillis());
         List<Room> rooms = centralAC.getRooms();
         Room room = rooms.get(roomid);
-        if(room.isCheckOut()){
+        if(!room.getOccupied()){
             room.CheckIn(present);
             return  new ResponseEntity<Room>(room,HttpStatus.OK);
         }
@@ -45,20 +46,25 @@ public class FrontController {
     public ResponseEntity<Check> CheckOut(@PathVariable int roomid){
         List<Room> rooms = centralAC.getRooms();
         Room room = rooms.get(roomid);
-        if(room.isCheckOut()){
-            return  new ResponseEntity<Check>(HttpStatus.BAD_REQUEST);
-        }
-        else{
+        if(room.getOccupied()){
+
             room.CheckOut();
             Check ch = service.Checkout();
             return  new ResponseEntity<Check>(ch,HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return  new ResponseEntity<Check>(HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @ApiOperation(value = "办理退房", notes = "如果已经退房返回BAD_REQUEST，未退房返回一个Check")
     @PostMapping(path = "/Detailed/{roomid}/{startTime}/{endTime}",consumes = "application/json", produces = "application/json")
+    public ResponseEntity<DetailedCheck> CheckOut(@PathVariable int roomid,@PathVariable Timestamp startTime,@PathVariable Timestamp endTime){
+        service.detailedRequest();
+        return new ResponseEntity<Check>(,HttpStatus.OK);
 
+    }
 
 
 
