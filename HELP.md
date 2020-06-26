@@ -1,5 +1,4 @@
 # Getting Started
-safa
 ### Reference Documentation
 For further reference, please consider the following sections:
 
