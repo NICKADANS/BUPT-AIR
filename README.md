@@ -1,8 +1,13 @@
 # BUPT-AIR
 <b>bupt-airsystem-backend</b><br>
-git add之前，请将application.proerties中的mysql的username和
-password改为以下内容(即改为空)，pull/push完代码后再加上。
+* 第一次pull到本地后，在src/main/下创建一个resources的文件夹<br>
+在其中新建一个文件，文件名为application.properties<br>
+该文件的内容如下
 ```
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.url=jdbc:mysql://localhost:3306/airsystem?serverTimezone=UTC
+spring.datasource.username=你的mysql用户名
+spring.datasource.password=你的mysql密码
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 ```
