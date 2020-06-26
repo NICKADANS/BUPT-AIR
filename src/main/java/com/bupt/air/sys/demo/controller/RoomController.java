@@ -30,7 +30,7 @@ public class RoomController {
 
     @ApiOperation(value = "用户获取指定房间信息")
     @GetMapping(path = "/roominfo", produces = "application/json")
-    public Result<?> PrintRoomInfo(@RequestParam("roomid") int roomid){
+    public Result<?> printRoomInfo(@RequestParam("roomid") int roomid){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         if(i == -1) {
@@ -80,7 +80,7 @@ public class RoomController {
 
     @ApiOperation(value = "用户关闭房间空调")
     @PostMapping(path = "/turnoffair", produces = "application/json")
-    public Result<?> requestOff(@RequestParam("roomid")int roomid){
+    public Result<?> turnOffAir(@RequestParam("roomid")int roomid){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         //如果两次请求间隔小于1s，拒绝服务
@@ -111,7 +111,7 @@ public class RoomController {
 
     @ApiOperation(value = "用户指定房间风速模式")
     @PostMapping(path = "/setwinmode", produces = "application/json")
-    public Result<?> setwinmode(@RequestParam("roomid")int roomid, @RequestParam("winmode")String winmode){
+    public Result<?> setWinmode(@RequestParam("roomid")int roomid, @RequestParam("winmode")String winmode){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         //如果两次请求间隔小于1s，拒绝服务

@@ -167,6 +167,7 @@ public class CentralAC {
     //初始化服务器
     public CentralAC(){
         rooms = new ArrayList<Room>();
+        state = "ON";
         temp_default = (float)25.0;
         temp_high = (float)30.0;
         temp_low = (float)18.0;

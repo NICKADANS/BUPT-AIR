@@ -32,7 +32,7 @@ public class MasterController {
         System.out.println(roomid);
         System.out.println(inittemp);
         //初始化一个新房间
-        Room room = new Room(Integer.valueOf(roomid), Float.valueOf(inittemp));
+        Room room = new Room(Integer.parseInt(roomid), Float.parseFloat(inittemp));
         //服务器房间数组新增一个房间
         boolean isAddOk = centralAC.addNewRoom(room);
         if(!isAddOk) {
@@ -49,9 +49,9 @@ public class MasterController {
 
     @ApiOperation(value = "管理员初始化请求队列")
     @PostMapping(path = "/init/requestqueue", produces = "application/json")
-    public Result<?> InitQueue(@RequestBody Map<String,String> param){
-        int size = Integer.valueOf(param.get("size"));              //队列的大小
-        int timeslice = Integer.valueOf(param.get("slice"));        //队列的时间片
+    public Result<?> initQueue(@RequestBody Map<String,String> param){
+        int size = Integer.parseInt(param.get("size"));              //队列的大小
+        int timeslice = Integer.parseInt(param.get("slice"));        //队列的时间片
         List<Room> rooms = centralAC.getRooms();
         //清空队列里正在服务的房间请求
         for(RoomRequest r : centralAC.getRequest_queue()){
@@ -75,14 +75,14 @@ public class MasterController {
 
     @ApiOperation(value = "管理员获取所有房间信息")
     @GetMapping(path = "/allroominfo", produces = "application/json")
-    public Result<?> PrintAllRoomInfo(){
+    public Result<?> printAllRoomInfo(){
         List<Room> rooms = centralAC.getRooms();
         return Result.ok(rooms, "操作成功");
     }
 
     @ApiOperation(value = "管理员获取指定房间信息")
     @GetMapping(path = "/roominfo", produces = "application/json")
-    public Result<?> PrintRoomInfo(@RequestParam("roomid") int roomid){
+    public Result<?> printRoomInfo(@RequestParam("roomid") int roomid){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         if(i == -1) {
@@ -132,7 +132,7 @@ public class MasterController {
 
     @ApiOperation(value = "管理员关闭房间空调")
     @PostMapping(path = "/turnoffair", produces = "application/json")
-    public Result<?> requestOff(@RequestParam("roomid")int roomid){
+    public Result<?> turnOffAir(@RequestParam("roomid")int roomid){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         //如果两次请求间隔小于1s，拒绝服务
@@ -163,7 +163,7 @@ public class MasterController {
 
     @ApiOperation(value = "管理员指定房间风速模式")
     @PostMapping(path = "/setwinmode", produces = "application/json")
-    public Result<?> setwinmode(@RequestParam("roomid")int roomid, @RequestParam("winmode")String winmode){
+    public Result<?> setWinmode(@RequestParam("roomid")int roomid, @RequestParam("winmode")String winmode){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         //如果两次请求间隔小于1s，拒绝服务
@@ -195,4 +195,15 @@ public class MasterController {
         }
     }
 
+    @ApiOperation(value = "管理员指定中央空调参数")
+    @PostMapping(path = "/setairparam", produces = "application/json")
+    public Result<?> setAirParam(@RequestBody Map<String,String> param){
+        String lower = param.get("lower");      //最低温度
+        String higher = param.get("higher");    //最高温度
+        String state = param.get("state");      //中央空调开关
+        centralAC.setTemp_low(Float.parseFloat(lower));
+        centralAC.setTemp_low(Float.parseFloat(higher));
+        centralAC.setState(state);
+        return Result.ok("操作成功");
+    }
 }
