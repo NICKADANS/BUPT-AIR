@@ -246,4 +246,25 @@ public class Room {
     public void setIdleUpdateTime(int idleUpdateTime) {
         this.idleUpdateTime = idleUpdateTime;
     }
+
+
+    public boolean isCheckOut(){
+        return (isOccupied);
+    }
+
+    public void CheckIn(Timestamp present){
+        isOccupied = false;
+        t_checkin = present;
+        state = "OFF";
+        servingTime = 0;
+        fee = 0;
+    }
+
+    public void CheckOut(){
+        isOccupied = true;
+        t_checkin = null;
+        state = "OFF";
+        servingTime = 0;
+        fee = 0;
+    }
 }
