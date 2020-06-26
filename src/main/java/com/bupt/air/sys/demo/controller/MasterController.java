@@ -77,7 +77,24 @@ public class MasterController {
     @GetMapping(path = "/allroominfo", produces = "application/json")
     public Result<?> printAllRoomInfo(){
         List<Room> rooms = centralAC.getRooms();
-        return Result.ok(rooms, "操作成功");
+        class Res{
+            public int idling;
+            public int serving;
+            public List<Room> rooms;
+        }
+        int idlenum = 0;
+        int servingnum = 0;
+        Res res = new Res();
+        res.rooms = rooms;
+        for(int i = 0; i<rooms.size(); i++){
+            if(rooms.get(i).getState().equals("IDLE")){
+                idlenum++;
+            }
+            else if(rooms.get(i).getState().equals("HEAT") || rooms.get(i).getState().equals("FREEZE")){
+                servingnum++;
+            }
+        }
+        return Result.ok(res, "操作成功");
     }
 
     @ApiOperation(value = "管理员获取指定房间信息")
