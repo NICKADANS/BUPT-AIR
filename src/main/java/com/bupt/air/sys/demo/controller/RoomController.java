@@ -29,7 +29,7 @@ public class RoomController {
     CentralAC centralAC;
 
     @ApiOperation(value = "用户获取指定房间信息")
-    @GetMapping(path = "/roominfo", produces = "application/json")
+    @PostMapping(path = "/roominfo", produces = "application/json")
     public Result<?> printRoomInfo(@RequestParam("roomid") int roomid){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
