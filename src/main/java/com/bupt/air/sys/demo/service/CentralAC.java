@@ -104,6 +104,26 @@ public class CentralAC {
         this.request_min_winrate = request_min_winrate;
     }
 
+    //新增一个房间
+    public boolean addNewRoom(Room r) {
+        if(rooms.get(r.getRoomid()) != null) {
+            System.out.println(rooms.get(r.getRoomid()));
+            return false;
+        }
+        rooms.add(r);
+        return false;
+    }
+
+    public boolean setRoom(Room r){
+        int roomid = r.getRoomid();
+        if(rooms.get(roomid) == null){
+            return false;
+        }
+        rooms.set(roomid,r);
+        return true;
+    }
+
+
     //为服务队列中每个房间的服务时间加1秒
     public void updateRequestQueueServingTime(){
         for(RoomRequest rr : request_queue){

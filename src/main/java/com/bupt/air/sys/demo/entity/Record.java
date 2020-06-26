@@ -16,6 +16,7 @@ public class Record {
     private int roomid;                 //房间号
     private Timestamp opttime;          //操作时刻
     private boolean isOccupied;         //房间是否空闲
+    private float initTemp;             //初始温度
     private float localTemp;            //当前温度
     private float targetTemp;           //目标温度
     private String winmode;             //风速模式，取值 {"LOW","MID","HIGH"}
@@ -37,6 +38,7 @@ public class Record {
         this.roomid = r.getRoomid();
         this.opttime= new Timestamp(System.currentTimeMillis());
         this.isOccupied = r.getOccupied();
+        this.initTemp = r.getInitTemp();
         this.localTemp = r.getLocalTemp();
         this.targetTemp = r.getTargetTemp();
         this.winmode = r.getWinmode();

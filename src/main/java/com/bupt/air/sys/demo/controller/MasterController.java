@@ -23,20 +23,24 @@ public class MasterController {
     @Autowired
     CentralAC centralAC;
 
-    @ApiOperation(value = "管理员初始化房间信息")
-    @PostMapping(path = "/init/rooms", produces = "application/json")
-    public ResponseEntity<Room> InitRooms(@RequestParam("size") int size){
-        //初始化所有的房间，并写入记录
-        List<Room> rooms = new ArrayList<Room>();
-        for(int i = 0; i < size; i++){
-            Room temp = new Room(i);
-            rooms.add(temp);
-            Record record = new Record(temp, "MASTER");
-            recordRepository.save(record);
+    @ApiOperation(value = "管理员向服务器初始化房间信息")
+    @PostMapping(path = "/add/room", produces = "application/json")
+    public ResponseEntity<Room> addNewRoom(@RequestBody Map<String,String> param){
+        String roomid = param.get("roomid");
+        String inittemp = param.get("inittemp");
+        //初始化一个新房间
+        Room room = new Room(Integer.valueOf(roomid), Float.valueOf(inittemp));
+        //生成操作记录
+        Record record = new Record(room, "MASTER");
+        recordRepository.save(record);
+        //服务器房间数组新增一个房间
+        boolean isAddOk = centralAC.addNewRoom(room);
+        if(isAddOk){
+            return new ResponseEntity<Room>(HttpStatus.FORBIDDEN);
         }
-        //更新服务器的房间信息
-        centralAC.setRooms(rooms);
-        return new ResponseEntity<Room>(HttpStatus.CREATED);
+        else{
+            return new ResponseEntity<Room>(HttpStatus.CREATED);
+        }
     }
 
     @ApiOperation(value = "管理员初始化请求队列")
