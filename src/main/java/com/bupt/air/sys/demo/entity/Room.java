@@ -14,6 +14,7 @@ public class Room {
     private int roomid;                 //房间号
     private boolean isOccupied;         //房间是否空闲
     private Timestamp t_checkin;        //入住时间
+    private float initTemp;             //初始温度
     private float localTemp;            //当前温度
     private float targetTemp;           //目标温度
     private String winmode;             //风速模式，取值 {"LOW","MID","HIGH"}
@@ -29,11 +30,13 @@ public class Room {
 
     }
 
-    public Room(int roomid){
+    //创建房间对象，提供房间id和房间温度
+    public Room(int roomid, float initTemp){
         this.roomid = roomid;
         this.isOccupied = false;
-        this.localTemp = (float) 25.0;
-        this.targetTemp = (float) 25.0;
+        this.initTemp = initTemp;
+        this.localTemp = initTemp;  //当前温度默认为初始温度
+        this.targetTemp = initTemp; //目标温度默认为初始温度
         this.winmode = "MID";
         this.winrate = (float)0.5;
         this.state = "OFF";
@@ -68,12 +71,12 @@ public class Room {
     //处于服务队列中的房间，每当autoUpdateTime到59，自动清零，并更新房间信息
     public void autoUpdateState(){
         this.autoUpdateTime = 0;//重置更新时间
-        //空调关机状态下，每分钟变化0.5度，恢复至室温附近
+        //空调关机状态下，每分钟变化0.5度，恢复至初始温度附近
         if(this.state.equals("OFF")){
-            if(this.localTemp < 25.0){
+            if(this.localTemp < initTemp){
                 this.localTemp += 0.5;
             }
-            else if(this.localTemp > 25.0){
+            else if(this.localTemp > initTemp){
                 this.localTemp -= 0.5;
             }
         }
@@ -124,11 +127,11 @@ public class Room {
     //处于等待服务状态(IDLE)下的房间，每当idleUpdateTime到达59，清零并更新房间信息
     public void autoUpdateIdleState(){
         this.idleUpdateTime = 0;
-        //自动恢复至室温附近
-        if(this.localTemp < 25.0){
+        //自动恢复至初始温度附近
+        if(this.localTemp < initTemp){
             this.localTemp += 0.5;
         }
-        else if(this.localTemp > 25.0){
+        else if(this.localTemp > initTemp){
             this.localTemp -= 0.5;
         }
     }
@@ -245,5 +248,13 @@ public class Room {
 
     public void setIdleUpdateTime(int idleUpdateTime) {
         this.idleUpdateTime = idleUpdateTime;
+    }
+
+    public float getInitTemp() {
+        return initTemp;
+    }
+
+    public void setInitTemp(float initTemp) {
+        this.initTemp = initTemp;
     }
 }
