@@ -39,7 +39,9 @@ public class RoomController {
 
     @ApiOperation(value = "用户指定房间目标温度")
     @PostMapping(path = "/settargetTemp", produces = "application/json")
-    public Result<?> setTargetTemp(@RequestParam("roomid")int roomid, @RequestParam("target")float target){
+    public Result<?> setTargetTemp(@RequestBody Map<String,String> param){
+        int roomid = Integer.parseInt(param.get("roomid"));
+        float target = Float.parseFloat(param.get("target"));
         List<Room> rooms = centralAC.getRooms();
         Queue<RoomRequest> rq = centralAC.getRequest_queue();
         int i = centralAC.findRoom(roomid);
@@ -78,7 +80,8 @@ public class RoomController {
 
     @ApiOperation(value = "用户关闭房间空调")
     @PostMapping(path = "/turnoffair", produces = "application/json")
-    public Result<?> turnOffAir(@RequestParam("roomid")int roomid){
+    public Result<?> turnOffAir(@RequestBody Map<String,String> param){
+        int roomid = Integer.parseInt(param.get("roomid"));
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         //如果两次请求间隔小于1s，拒绝服务
@@ -90,7 +93,7 @@ public class RoomController {
             return Result.error("房间id不存在!");
         }
         else {
-            Room room = rooms.get(roomid);
+            Room room = rooms.get(i);
             //将房间从当前服务队列中移除
             centralAC.removeRoominRequestQueue(roomid);
             //重置目标状态模式和等待时间
@@ -109,7 +112,9 @@ public class RoomController {
 
     @ApiOperation(value = "用户指定房间风速模式")
     @PostMapping(path = "/setwinmode", produces = "application/json")
-    public Result<?> setWinmode(@RequestParam("roomid")int roomid, @RequestParam("winmode")String winmode){
+    public Result<?> setWinmode(@RequestBody Map<String,String> param){
+        int roomid = Integer.parseInt(param.get("roomid"));
+        String winmode = param.get("winmode");
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         //如果两次请求间隔小于1s，拒绝服务
@@ -125,7 +130,7 @@ public class RoomController {
             return Result.error("房间id不存在!");
         }
         else {
-            Room room = rooms.get(roomid);
+            Room room = rooms.get(i);
             //将房间从当前服务队列中移除
             centralAC.removeRoominRequestQueue(roomid);
             //重置目标风速模式和等待时间
