@@ -12,7 +12,7 @@ public class CentralAC {
     String state;                           //中央空调状态：OFF、ON
     float temp_low;                         //房间最低温度
     float temp_high;                        //房间最高温度
-    float temp_default;                     //默认室温
+    float temp_default;                     //制热/制冷分界线
     Queue<RoomRequest> request_queue;       //服务队列
     int request_queue_size;                 //服务队列的大小，默认为5
     int request_waittime;                   //服务的时间片，默认为10s
@@ -106,23 +106,34 @@ public class CentralAC {
 
     //新增一个房间
     public boolean addNewRoom(Room r) {
-        if(rooms.get(r.getRoomid()) != null) {
-            System.out.println(rooms.get(r.getRoomid()));
+        //判断是否房间号冲突
+        int i = findRoom(r.getRoomid());
+        //已经存在该房间
+        if(i != -1){
             return false;
         }
         rooms.add(r);
-        return false;
-    }
-
-    public boolean setRoom(Room r){
-        int roomid = r.getRoomid();
-        if(rooms.get(roomid) == null){
-            return false;
-        }
-        rooms.set(roomid,r);
         return true;
     }
 
+    public boolean setRoom(Room r){
+        //判断是否房间号冲突
+        int i = findRoom(r.getRoomid());
+        if(i != -1){
+            rooms.set(i, r);
+            return true;
+        }
+        return false;
+    }
+
+    public int findRoom(int roomid){
+        for(int i = 0; i<rooms.size(); i++){
+            if(rooms.get(i).getRoomid() == roomid){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     //为服务队列中每个房间的服务时间加1秒
     public void updateRequestQueueServingTime(){
@@ -156,6 +167,7 @@ public class CentralAC {
     //初始化服务器
     public CentralAC(){
         rooms = new ArrayList<Room>();
+        state = "ON";
         temp_default = (float)25.0;
         temp_high = (float)30.0;
         temp_low = (float)18.0;

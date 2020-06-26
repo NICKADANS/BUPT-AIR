@@ -3,6 +3,7 @@ package com.bupt.air.sys.demo;
 import com.bupt.air.sys.demo.entity.RoomRequest;
 import com.bupt.air.sys.demo.service.CentralAC;
 import com.bupt.air.sys.demo.entity.Room;
+import com.bupt.air.sys.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class AutoTimer {
     @Autowired
     CentralAC centralAC;//自动装配Service Bean HotelServer
-
+    @Autowired
+    RoomService roomService;
     //每隔一秒，自动更新所有房间的waitingTime与servingTime
     @Scheduled(fixedRate = 1000)
     public void UpdateWaitingTime(){
@@ -24,16 +26,17 @@ public class AutoTimer {
         float min_winrate = centralAC.getRequest_min_winrate();
         int timeslice = centralAC.getRequest_waittime();
         int queue_max_size = centralAC.getRequest_queue_size();
+        System.out.println(centralAC.getTemp_high() + ", " + centralAC.getTemp_low());
+        System.out.println(min_winrate + ", " + timeslice + ", " + queue_max_size);
         //调试房间信息
         if(rooms.size() == 0){
-            System.out.println(min_winrate + ", " + timeslice + ", " + queue_max_size);
             System.out.println("Now rooms is NULL!!");
             return;
         }
         //为每个请求队列中的请求增加1s服务时间
         centralAC.updateRequestQueueServingTime();
         //修改每个房间的状态
-        System.out.println("request queue's size :" + centralAC.getRequest_queue().size());
+        System.out.println("now request queue's size :" + centralAC.getRequest_queue().size());
         for(int i = 0; i<rooms.size();i++){
             Room room = rooms.get(i);
             int waitTime = room.getWaitingTime();
@@ -47,7 +50,7 @@ public class AutoTimer {
             if(room.getState().equals("IDLE")){
                 //当待机状态累计1分钟，自动清零并更新当前温度
                 if(room.getIdleUpdateTime() == 59){
-                    room.autoUpdateIdleState();
+                    roomService.autoUpdateIdleState(room);
                 }
                 else{
                     room.setIdleUpdateTime(room.getIdleUpdateTime() + 1);
@@ -60,7 +63,7 @@ public class AutoTimer {
                 //当前房间需要服务，此时请求队列未满，直接将当前房间放入请求队列接受服务
                 else if(centralAC.getRequest_queue().size() < queue_max_size){
                     //更新房间状态
-                    room.transferRunningState();
+                    roomService.transferRunningState(room);
                     //重置等待时间
                     room.setWaitingTime(0);
                     //放入请求队列
@@ -105,7 +108,7 @@ public class AutoTimer {
                             newrq.offer(rr);
                         }
                         //更新当前房间状态
-                        room.transferRunningState();
+                        roomService.transferRunningState(room);
                         //重置等待时间
                         room.setWaitingTime(0);
                         //把当前房间放入新队列
@@ -124,7 +127,7 @@ public class AutoTimer {
                     //当前房间风速与队列中的最小风速一致，但其等待时间已经超出了时间片
                     //此时，需要把请求队列中服务时间最长，且风速与当前房间一致的房间移除，并把当前房间放入请求队列
                     else if (room.getWinrate() - min_winrate < 0.02 && room.getWinrate() - min_winrate > -0.02
-                            && waitTime > timeslice) {
+                            && waitTime >= timeslice) {
                         //获取请求队列
                         Queue<RoomRequest> rq = centralAC.getRequest_queue();
                         //建立一个新队列
@@ -152,7 +155,7 @@ public class AutoTimer {
                             newrq.offer(rr);
                         }
                         //更新当前房间状态
-                        room.transferRunningState();
+                        roomService.transferRunningState(room);
                         //重置等待时间
                         room.setWaitingTime(0);
                         //把当前房间放入新队列
@@ -180,7 +183,7 @@ public class AutoTimer {
                 //如果房间到达自动更新的时间
                 if (autoupdateTime == 59) {
                     //自动更新房间信息
-                    room.autoUpdateState();
+                    roomService.autoUpdateState(room);
                 }
                 else {
                     //更新房间计时器
@@ -192,9 +195,9 @@ public class AutoTimer {
                 //服务时间增加1秒
                 rooms.get(i).setServingTime(servTime + 1);
                 //如果房间到达自动更新的时间
-                if(autoupdateTime == 59){
+                if(autoupdateTime >= 59){
                     //自动更新房间信息
-                    room.autoUpdateState();
+                    roomService.autoUpdateState(room);
                     //接近目标温度，停止送风请求
                     if(room.getState().equals("IDLE")){
                         centralAC.removeRoominRequestQueue(room.getRoomid());
