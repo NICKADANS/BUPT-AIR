@@ -1,6 +1,6 @@
 # BUPT-AIR
 <b>bupt-airsystem-backend</b><br>
-* 第一次pull到本地后，在src/main/下创建一个resources的文件夹<br>
+* 第一次clone到本地后，在src/main/下创建一个resources的文件夹<br>
 在其中新建一个文件，文件名为application.properties<br>
 该文件的内容如下
 ```
