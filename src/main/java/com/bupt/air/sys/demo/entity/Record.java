@@ -52,4 +52,11 @@ public class Record {
         this.opter = opter;
     }
 
+    public float getFee() {
+        return fee;
+    }
+
+    public int getServingTime() {
+        return servingTime;
+    }
 }

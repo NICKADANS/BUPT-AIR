@@ -36,7 +36,7 @@ public class FrontController {
         if(!room.getOccupied()){
             room.CheckIn(present);
             if(centralAC.setRoom(room)){
-                return  Result.ok(room);
+                return Result.ok(room);
             }
         }
         return  Result.error(400,"room is  already Occupied");
