@@ -63,7 +63,7 @@ public class FrontController {
         if(room.getOccupied()){
             //要求打印详单
             if(isdetailed.equals("true")){
-                DetailedCheck dch = service.detailedRequest(roomid, room.getT_checkin(), present);
+                DetailedCheck dch = service.detailedRequest(roomid, present);
                 room.CheckOut();
                 centralAC.setRoom(room);
                 return Result.ok(dch, "操作成功");

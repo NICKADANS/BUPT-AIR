@@ -34,15 +34,19 @@ public class FrontService {
         return ch;
     }
 
-    public DetailedCheck detailedRequest(int roomid,Timestamp startTime,Timestamp endTime){
+    public DetailedCheck detailedRequest(int roomid, Timestamp endTime){
+        List<Room> rooms = centralAC.getRooms();
+        int i = centralAC.findRoom(roomid);
         DetailedCheck dch = new DetailedCheck();
+        Room room = rooms.get(i);
         dch.setRoomid(roomid);
-        dch.setEndTime(endTime);
+        Timestamp startTime = room.getT_checkin();
         dch.setStartTime(startTime);
+        dch.setEndTime(endTime);
         dch.setPrinted(true);
         dch.setRecords(recordRepository.findByRoomidAndOpttimeBetween(roomid, startTime, endTime));
         int size = dch.getRecords().size();
-        dch.setFee(dch.getRecords().get(size).getFee());
+        dch.setFee(room.getFee());
         return dch;
     }
 
