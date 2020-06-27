@@ -56,9 +56,8 @@ public class FrontController {
                 return  Result.ok(ch);
             }
         }
-        else{
-            return  Result.error(400,"room is  already checked out");
-        }
+        return  Result.error(400,"room is  already checked out");
+
 
     }
 
