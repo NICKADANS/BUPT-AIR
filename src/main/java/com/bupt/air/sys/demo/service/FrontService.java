@@ -40,11 +40,10 @@ public class FrontService {
         dch.setEndTime(endTime);
         dch.setStartTime(startTime);
         dch.setPrinted(true);
-        dch.setRecords(recordRepository.findByOpttimeBetween(startTime,endTime));
+        dch.setRecords(recordRepository.findByRoomidAndOpttimeBetween(roomid, startTime, endTime));
         int size = dch.getRecords().size();
         dch.setFee(dch.getRecords().get(size).getFee());
         return dch;
-
     }
 
 

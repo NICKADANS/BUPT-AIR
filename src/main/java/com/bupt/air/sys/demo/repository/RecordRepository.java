@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long> {
     List<Record> findByRoomid(int roomid);
-    List<Record> findByOpttimeBetween(Timestamp startTime,Timestamp endTime);
+    List<Record> findByRoomidAndOpttimeBetween(int roomid, Timestamp startTime,Timestamp endTime);
     List<Record> findByOpterAndOpttimeBetween(String opter, Timestamp starttime, Timestamp endtime);
 
 }

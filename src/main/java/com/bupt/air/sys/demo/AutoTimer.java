@@ -26,8 +26,8 @@ public class AutoTimer {
         float min_winrate = centralAC.getRequest_min_winrate();
         int timeslice = centralAC.getRequest_waittime();
         int queue_max_size = centralAC.getRequest_queue_size();
-        System.out.println(centralAC.getTemp_high() + ", " + centralAC.getTemp_low());
-        System.out.println(min_winrate + ", " + timeslice + ", " + queue_max_size);
+        //System.out.println(centralAC.getTemp_high() + ", " + centralAC.getTemp_low());
+        //System.out.println(min_winrate + ", " + timeslice + ", " + queue_max_size);
         //调试房间信息
         if(rooms.size() == 0){
             System.out.println("Now rooms is NULL!!");
@@ -36,16 +36,16 @@ public class AutoTimer {
         //为每个请求队列中的请求增加1s服务时间
         centralAC.updateRequestQueueServingTime();
         //修改每个房间的状态
-        System.out.println("now request queue's size :" + centralAC.getRequest_queue().size());
+        //System.out.println("now request queue's size :" + centralAC.getRequest_queue().size());
         for(int i = 0; i<rooms.size();i++){
             Room room = rooms.get(i);
             int waitTime = room.getWaitingTime();
             int servTime = room.getServingTime();
             int autoupdateTime = room.getAutoUpdateTime();
-            System.out.println(room.getRoomid() + " autoupdatein:" + autoupdateTime + "s,\t wait:" + room.getWaitingTime()
-                    + "s,\t serving:"+ room.getServingTime() + "s,\t idle:" + room.getIdleUpdateTime()
-                    + "s,\t state:"+room.getState() + ",\t\t winmode:"+ room.getWinmode() + ",\t cost:"+room.getFee()
-                    + "$,\t now:" + room.getLocalTemp() + "C,\t tar:" + room.getTargetTemp() + "C");
+//            System.out.println(room.getRoomid() + " autoupdatein:" + autoupdateTime + "s,\t wait:" + room.getWaitingTime()
+//                    + "s,\t serving:"+ room.getServingTime() + "s,\t idle:" + room.getIdleUpdateTime()
+//                    + "s,\t state:"+room.getState() + ",\t\t winmode:"+ room.getWinmode() + ",\t cost:"+room.getFee()
+//                    + "$,\t now:" + room.getLocalTemp() + "C,\t tar:" + room.getTargetTemp() + "C");
             //当前房间空调当前处于等待服务状态
             if(room.getState().equals("IDLE")){
                 //当待机状态累计1分钟，自动清零并更新当前温度

@@ -37,6 +37,7 @@ public class ManagerController {
         int maxServing = -1;
         int minServing = 9999999;
         for(int i = 0;i<records.size();i++){
+            System.out.println(records.get(i));
             int tempServing = records.get(i).getServingTime();
             maxServing = tempServing > maxServing ? tempServing : maxServing;
             minServing = tempServing < minServing ? tempServing : minServing;
