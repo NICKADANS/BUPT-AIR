@@ -169,7 +169,7 @@ public class Room {
     }
 
     public void CheckIn(Timestamp present){
-        isOccupied = false;
+        isOccupied = true;
         t_checkin = present;
         state = "OFF";
         servingTime = 0;
@@ -177,7 +177,7 @@ public class Room {
     }
 
     public void CheckOut(){
-        isOccupied = true;
+        isOccupied = false;
         t_checkin = null;
         state = "OFF";
         servingTime = 0;
