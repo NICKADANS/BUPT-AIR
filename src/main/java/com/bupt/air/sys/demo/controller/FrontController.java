@@ -35,11 +35,12 @@ public class FrontController {
         Room room = rooms.get(roomid);
         if(!room.getOccupied()){
             room.CheckIn(present);
-            return  Result.ok(room);
+            if(centralAC.setRoom(room)){
+                return  Result.ok(room);
+            }
         }
-        else{
-            return  Result.error(400,"room is  already Occupied");
-        }
+        return  Result.error(400,"room is  already Occupied");
+
     }
 
     @ApiOperation(value = "办理退房", notes = "如果已经退房返回BAD_REQUEST，未退房返回一个Check")
@@ -51,7 +52,9 @@ public class FrontController {
         if(room.getOccupied()){
             Check ch = service.Checkout(roomid,present);
             room.CheckOut();
-            return  Result.ok(ch);
+            if(centralAC.setRoom(room)){
+                return  Result.ok(ch);
+            }
         }
         else{
             return  Result.error(400,"room is  already checked out");
