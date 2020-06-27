@@ -29,7 +29,7 @@ public class FrontController {
     private FrontService service;
 
     @ApiOperation(value = "办理入住", notes = "检验房间是否已经办理退房，退房了初始化房间并返回房间信息，否则返回BAD_REQUEST")
-    @GetMapping(path = "/checkin", produces = "application/json")
+    @PostMapping(path = "/checkin", produces = "application/json")
     public Result<?> PrintAllRoomInfo(@RequestBody Map<String,String> param){
         int roomid = Integer.parseInt(param.get("roomid"));
         Timestamp present = new Timestamp(System.currentTimeMillis());

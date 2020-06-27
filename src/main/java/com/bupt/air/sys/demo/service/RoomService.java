@@ -1,6 +1,7 @@
 package com.bupt.air.sys.demo.service;
 
 import com.bupt.air.sys.demo.entity.Room;
+import com.bupt.air.sys.demo.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Component;
 public class RoomService {
     @Autowired
     CentralAC centralAC;
+    @Autowired
+    RecordRepository recordRepository;
 
     public void autoUpdateState(Room room){
         String state = room.getState();
