@@ -2,6 +2,7 @@ package com.bupt.air.sys.demo.service;
 
 import com.bupt.air.sys.demo.entity.Check;
 import com.bupt.air.sys.demo.entity.DetailedCheck;
+import com.bupt.air.sys.demo.entity.Record;
 import com.bupt.air.sys.demo.entity.Room;
 import com.bupt.air.sys.demo.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class FrontService {
         ch.setStartTime(endTime);
         ch.setPrinted(true);
         ch.setFee(room.getFee());
+        Record record = new Record(room,"FRONT");
+        recordRepository.save(record);
         return ch;
     }
 
