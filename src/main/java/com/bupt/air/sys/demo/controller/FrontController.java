@@ -45,12 +45,12 @@ public class FrontController {
     @ApiOperation(value = "办理退房", notes = "如果已经退房返回BAD_REQUEST，未退房返回一个Check")
     @PostMapping(path = "/CheckOut/{roomid}",consumes = "application/json", produces = "application/json")
     public Result<?>  CheckOut(@PathVariable int roomid){
+        Timestamp present = new Timestamp(System.currentTimeMillis());
         List<Room> rooms = centralAC.getRooms();
         Room room = rooms.get(roomid);
         if(room.getOccupied()){
-
+            Check ch = service.Checkout(roomid,present);
             room.CheckOut();
-            Check ch = service.Checkout();
             return  Result.ok(ch);
         }
         else{
