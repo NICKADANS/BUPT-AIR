@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Data
-@ApiModel(value = "Room-Record", description = "房间记录示例")
+@ApiModel(value = "DetailCheck", description = "详单示例")
 public class DetailedCheck {
     private int roomid;
     private Timestamp startTime;

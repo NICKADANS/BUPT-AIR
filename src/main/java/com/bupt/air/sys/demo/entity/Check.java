@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@ApiModel(value = "Room-Record", description = "房间记录示例")
+@ApiModel(value = "Check", description = "账单示例")
 public class Check {
     private int roomid;
     private Timestamp startTime;

@@ -20,8 +20,9 @@ public class FrontService {
 
     public Check Checkout(int roomid,Timestamp endTime){
         List<Room> rooms = centralAC.getRooms();
-        Room room = rooms.get(roomid);
+        int i = centralAC.findRoom(roomid);
         Check ch = new Check();
+        Room room = rooms.get(i);
         ch.setRoomid(roomid);
         Timestamp startTime = room.getT_checkin();
         ch.setEndTime(startTime);
