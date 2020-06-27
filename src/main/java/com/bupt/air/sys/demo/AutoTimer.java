@@ -36,16 +36,16 @@ public class AutoTimer {
         //为每个请求队列中的请求增加1s服务时间
         centralAC.updateRequestQueueServingTime();
         //修改每个房间的状态
-        //System.out.println("now request queue's size :" + centralAC.getRequest_queue().size());
+        System.out.println("now request queue's size :" + centralAC.getRequest_queue().size() + ", maxsize is " + queue_max_size);
         for(int i = 0; i<rooms.size();i++){
             Room room = rooms.get(i);
             int waitTime = room.getWaitingTime();
             int servTime = room.getServingTime();
             int autoupdateTime = room.getAutoUpdateTime();
-//            System.out.println(room.getRoomid() + " autoupdatein:" + autoupdateTime + "s,\t wait:" + room.getWaitingTime()
-//                    + "s,\t serving:"+ room.getServingTime() + "s,\t idle:" + room.getIdleUpdateTime()
-//                    + "s,\t state:"+room.getState() + ",\t\t winmode:"+ room.getWinmode() + ",\t cost:"+room.getFee()
-//                    + "$,\t now:" + room.getLocalTemp() + "C,\t tar:" + room.getTargetTemp() + "C");
+            System.out.println(room.getRoomid() + " autoupdatein:" + autoupdateTime + "s,\t wait:" + room.getWaitingTime()
+                    + "s,\t serving:"+ room.getServingTime() + "s,\t idle:" + room.getIdleUpdateTime()
+                    + "s,\t state:"+room.getState() + ",\t\t winmode:"+ room.getWinmode() + ",\t cost:"+room.getFee()
+                    + "$,\t now:" + room.getLocalTemp() + "C,\t tar:" + room.getTargetTemp() + "C");
             //当前房间空调当前处于等待服务状态
             if(room.getState().equals("IDLE")){
                 //当待机状态累计1分钟，自动清零并更新当前温度
@@ -62,6 +62,7 @@ public class AutoTimer {
                 }
                 //当前房间需要服务，此时请求队列未满，直接将当前房间放入请求队列接受服务
                 else if(centralAC.getRequest_queue().size() < queue_max_size){
+                    System.out.println("space is free, push "+room.getRoomid() + " to queue");
                     //更新房间状态
                     roomService.transferRunningState(room);
                     //重置等待时间
@@ -79,6 +80,7 @@ public class AutoTimer {
                 }
                 //当前房间需要服务，但是请求队列已满
                 else {
+                    System.out.println("room " + room.getRoomid() + " needs to be serve but space isn't free");
                     //当前房间的风速大于请求队列中的某一房间的风速，将对应房间从请求队列移除，把当前房间放入请求队列
                     if(room.getWinrate() > min_winrate) {
                         //获取请求队列
@@ -96,8 +98,9 @@ public class AutoTimer {
                             RoomRequest rr = rq.poll();
                             //找出需移出请求队列的房间
                             if(rr.getWinrate() < room.getWinrate()){
+                                int index = centralAC.findRoom(rr.getRoomid());
                                 //更新移出房间状态
-                                rooms.get(rr.getRoomid()).setState("IDLE");
+                                rooms.get(index).setState("IDLE");
                                 System.out.println("offer:#" + room.getRoomid() + ", waiting:" + room.getWaitingTime()
                                         + "s, winmode:" + room.getWinmode());
                                 System.out.println("remove:#" + rr.getRoomid() + ", serving:" + rr.getServingTime()
@@ -128,6 +131,7 @@ public class AutoTimer {
                     //此时，需要把请求队列中服务时间最长，且风速与当前房间一致的房间移除，并把当前房间放入请求队列
                     else if (room.getWinrate() - min_winrate < 0.02 && room.getWinrate() - min_winrate > -0.02
                             && waitTime >= timeslice) {
+                        System.out.println("room "+room.getRoomid() + " wait enough time");
                         //获取请求队列
                         Queue<RoomRequest> rq = centralAC.getRequest_queue();
                         //建立一个新队列
@@ -144,7 +148,8 @@ public class AutoTimer {
                             //找出第一个需移出请求队列的房间
                             if(rr.getWinrate() < room.getWinrate() + 0.02 && rr.getWinrate() > room.getWinrate() - 0.02){
                                 //更新移出房间状态
-                                rooms.get(rr.getRoomid()).setState("IDLE");
+                                int index = centralAC.findRoom(rr.getRoomid());
+                                rooms.get(index).setState("IDLE");
                                 System.out.println("offer:#" + room.getRoomid() + ", waiting:" + room.getWaitingTime()
                                         + "s, winmode:" + room.getWinmode());
                                 System.out.println("poll:#" + rr.getRoomid() + ", serving:" + rr.getServingTime()
