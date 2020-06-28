@@ -140,6 +140,7 @@ public class RoomController {
             centralAC.removeRoominRequestQueue(roomid);
             //重置目标状态模式和等待时间
             room.setState("IDLE");
+            room.setTargetTemp(centralAC.getTemp_default());
             room.setWaitingTime(0);
             room.setIdleUpdateTime(0);
             room.setAutoUpdateTime(0);
