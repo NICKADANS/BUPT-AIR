@@ -23,8 +23,8 @@ public class FrontService {
         Room room = rooms.get(i);
         ch.setRoomid(roomid);
         Timestamp startTime = room.getT_checkin();
-        ch.setEndTime(startTime);
-        ch.setStartTime(endTime);
+        ch.setEndTime(endTime);
+        ch.setStartTime(startTime);
         ch.setPrinted(true);
         ch.setFee(room.getFee());
         Record record = new Record(room,"FRONT");
