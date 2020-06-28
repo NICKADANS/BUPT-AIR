@@ -2,7 +2,9 @@ package com.bupt.air.sys.demo.controller;
 
 import com.bupt.air.sys.demo.entity.Check;
 import com.bupt.air.sys.demo.entity.DetailedCheck;
+import com.bupt.air.sys.demo.entity.Record;
 import com.bupt.air.sys.demo.entity.Room;
+import com.bupt.air.sys.demo.repository.RecordRepository;
 import com.bupt.air.sys.demo.service.CentralAC;
 import com.bupt.air.sys.demo.service.FrontService;
 import com.bupt.air.sys.demo.utils.Result;
@@ -24,6 +26,9 @@ public class FrontController {
 
     @Autowired
     CentralAC centralAC;
+
+    @Autowired
+    RecordRepository recordRepository;
 
     @Autowired
     private FrontService service;
@@ -53,7 +58,6 @@ public class FrontController {
     public Result<?> CheckOut(@RequestBody Map<String,String> param){
         int roomid = Integer.parseInt(param.get("roomid"));
         String isdetailed = param.get("isdetail");
-        Timestamp present = new Timestamp(System.currentTimeMillis());
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         if(i == -1){
@@ -61,6 +65,9 @@ public class FrontController {
         }
         Room room = rooms.get(i);
         if(room.getOccupied()){
+            Record record = new Record(room, "SYS-STOP");
+            recordRepository.save(record);
+            Timestamp present = new Timestamp(System.currentTimeMillis());
             //要求打印详单
             if(isdetailed.equals("true")){
                 DetailedCheck dch = service.detailedRequest(roomid, present);

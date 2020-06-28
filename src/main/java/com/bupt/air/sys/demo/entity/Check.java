@@ -14,4 +14,24 @@ public class Check {
     private Timestamp endTime;
     boolean isPrinted;
     private float Fee;
+
+    public void setPrinted(boolean printed) {
+        isPrinted = printed;
+    }
+
+    public void setRoomid(int roomid) {
+        this.roomid = roomid;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setFee(float fee) {
+        Fee = fee;
+    }
 }

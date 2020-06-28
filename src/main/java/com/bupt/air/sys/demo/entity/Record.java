@@ -56,6 +56,22 @@ public class Record {
         return fee;
     }
 
+    public String getOpter() {
+        return opter;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public Timestamp getOpttime() {
+        return opttime;
+    }
+
+    public String getWinmode() {
+        return winmode;
+    }
+
     public int getServingTime() {
         return servingTime;
     }

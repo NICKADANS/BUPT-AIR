@@ -1,5 +1,6 @@
 package com.bupt.air.sys.demo.service;
 
+import com.bupt.air.sys.demo.entity.Record;
 import com.bupt.air.sys.demo.entity.Room;
 import com.bupt.air.sys.demo.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,9 @@ public class RoomService {
         //当前温度接近目标温度时，转变状态
         else if(room.getLocalTemp() < room.getTargetTemp() + 0.35 && room.getLocalTemp() > room.getTargetTemp() - 0.35){
             room.setState("IDLE");
+            //停止送风时，保存一个记录
+            Record r = new Record(room, "SYS-STOP");
+            recordRepository.save(r);
         }
         //目标温度介于18-25度时，模式为制冷
         else if(room.getTargetTemp() >= lowerTemp && room.getTargetTemp() <= defaultTemp){

@@ -63,6 +63,11 @@ public class RoomController {
             }
             //将房间从当前服务队列中移除
             centralAC.removeRoominRequestQueue(roomid);
+            //当前空调处于制热/制冷状态
+            if(room.getState().equals("HEAT") || room.getState().equals("FREEZE")) {
+                Record record = new Record(room, "SYS-STOP");
+                recordRepository.save(record);
+            }
             //重置房间状态为等待服务
             room.setState("IDLE");
             //重置房间的目标温度、空调自动更新时间、房间等待服务时间
@@ -96,6 +101,11 @@ public class RoomController {
             Room room = rooms.get(i);
             //将房间从当前服务队列中移除
             centralAC.removeRoominRequestQueue(roomid);
+            //当前空调处于制热/制冷状态
+            if(room.getState().equals("HEAT") || room.getState().equals("FREEZE")) {
+                Record record = new Record(room, "SYS-STOP");
+                recordRepository.save(record);
+            }
             //重置目标状态模式和等待时间
             room.setState("OFF");
             room.setWaitingTime(0);
@@ -165,6 +175,11 @@ public class RoomController {
             Room room = rooms.get(i);
             //将房间从当前服务队列中移除
             centralAC.removeRoominRequestQueue(roomid);
+            //当前空调处于制热/制冷状态
+            if(room.getState().equals("HEAT") || room.getState().equals("FREEZE")) {
+                Record record = new Record(room, "SYS-STOP");
+                recordRepository.save(record);
+            }
             //重置目标风速模式和等待时间
             room.setState("IDLE");
             room.setWinmode(winmode);
