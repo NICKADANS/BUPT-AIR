@@ -70,7 +70,7 @@ public class FrontController {
             Timestamp present = new Timestamp(System.currentTimeMillis());
             //要求打印详单
             if(isdetailed.equals("true")){
-                DetailedCheck dch = service.detailedRequest(roomid, present);
+                DetailedCheck dch = service.detailCheckOut(roomid, present);
                 room.CheckOut();
                 centralAC.setRoom(room);
                 return Result.ok(dch, "操作成功");

@@ -32,7 +32,7 @@ public class FrontService {
         return ch;
     }
 
-    public DetailedCheck detailedRequest(int roomid, Timestamp endTime){
+    public DetailedCheck detailCheckOut(int roomid, Timestamp endTime){
         List<Room> rooms = centralAC.getRooms();
         int i = centralAC.findRoom(roomid);
         DetailedCheck dch = new DetailedCheck();
@@ -76,6 +76,8 @@ public class FrontService {
         }
         dch.setRecords(rd);
         dch.setFee(room.getFee());
+        Record record = new Record(room,"FRONT");
+        recordRepository.save(record);
         return dch;
     }
 

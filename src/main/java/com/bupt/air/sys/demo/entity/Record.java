@@ -72,6 +72,10 @@ public class Record {
         return winmode;
     }
 
+    public int getRoomid() {
+        return roomid;
+    }
+
     public int getServingTime() {
         return servingTime;
     }

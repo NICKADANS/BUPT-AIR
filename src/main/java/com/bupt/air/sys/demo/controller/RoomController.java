@@ -76,7 +76,7 @@ public class RoomController {
             //根据处理结果刷新服务器
             centralAC.setRoom(room);
             //将请求记录存入数据库
-            Record record = new Record(room, "USER");
+            Record record = new Record(room, "USER-TEMP");
             recordRepository.save(record);
             //返回HTTP状态码
             return Result.ok(room, "操作成功!");
@@ -114,7 +114,7 @@ public class RoomController {
             //根据处理结果刷新服务器
             centralAC.setRoom(room);
             //将请求记录存入数据库
-            Record record = new Record(room, "USER");
+            Record record = new Record(room, "USER-OFF");
             recordRepository.save(record);
             return Result.ok(room, "操作成功!");
         }
@@ -146,7 +146,7 @@ public class RoomController {
             //根据处理结果刷新服务器
             centralAC.setRoom(room);
             //将请求记录存入数据库
-            Record record = new Record(room, "USER");
+            Record record = new Record(room, "USER-ON");
             recordRepository.save(record);
             return Result.ok(room, "操作成功!");
         }
@@ -187,7 +187,7 @@ public class RoomController {
             room.setWaitingTime(0);
             centralAC.setRoom(room);
             //将请求记录存入数据库
-            Record record = new Record(room, "USER");
+            Record record = new Record(room, "USER-WIN");
             recordRepository.save(record);
             return Result.ok(room, "操作成功!");
         }
