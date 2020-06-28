@@ -3,14 +3,14 @@ package com.bupt.air.sys.demo.entity;
 import java.sql.Timestamp;
 
 public class DetailCheckRecord {
-    private Timestamp stratSend;    //开始送风时间
+    private Timestamp startSend;    //开始送风时间
     private Timestamp endSend;      //结束送风时间
     private int timeSend;           //送风时长
     private String winmode;         //风速
     private float fee;              //费用
 
     public DetailCheckRecord(Timestamp start, Timestamp end, int timeSend, String winmode, float fee){
-        this.stratSend = start;
+        this.startSend = start;
         this.endSend = end;
         this.timeSend = timeSend;
         this.winmode = winmode;
@@ -35,8 +35,8 @@ public class DetailCheckRecord {
         return endSend;
     }
 
-    public Timestamp getStratSend() {
-        return stratSend;
+    public Timestamp getStartSend() {
+        return startSend;
     }
 
     public void setWinmode(String winmode) {
@@ -51,8 +51,8 @@ public class DetailCheckRecord {
         this.endSend = endSend;
     }
 
-    public void setStratSend(Timestamp stratSend) {
-        this.stratSend = stratSend;
+    public void setStartSend(Timestamp startSend) {
+        this.startSend = startSend;
     }
 
     public void setTimeSend(int timeSend) {
