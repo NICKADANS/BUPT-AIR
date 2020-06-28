@@ -56,7 +56,7 @@ public class FrontService {
         for(int j = 0; j <records.size();j++){
             Record r = records.get(j);
             System.out.println(r);
-            if(r.getOpter().equals("SYS-SEND")){
+            if(›r.getOpter().equals("SYS-SEND")){
                 startt = r.getOpttime();
                 feestart = r.getFee();
                 winmode = r.getWinmode();
