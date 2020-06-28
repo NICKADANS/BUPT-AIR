@@ -94,6 +94,8 @@ public class MasterController {
                 servingnum++;
             }
         }
+        res.idling = idlenum;
+        res.serving = servingnum;
         return Result.ok(res, "操作成功");
     }
 
