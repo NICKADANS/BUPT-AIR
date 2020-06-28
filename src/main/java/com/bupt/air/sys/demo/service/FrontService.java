@@ -23,8 +23,8 @@ public class FrontService {
         Room room = rooms.get(i);
         ch.setRoomid(roomid);
         Timestamp startTime = room.getT_checkin();
-        ch.setEndTime(startTime);
-        ch.setStartTime(endTime);
+        ch.setEndTime(endTime);
+        ch.setStartTime(startTime);
         ch.setPrinted(true);
         ch.setFee(room.getFee());
         Record record = new Record(room,"FRONT");
@@ -56,7 +56,7 @@ public class FrontService {
         for(int j = 0; j <records.size();j++){
             Record r = records.get(j);
             System.out.println(r);
-            if(r.getOpter().equals("SYS-SEND")){
+            if(›r.getOpter().equals("SYS-SEND")){
                 startt = r.getOpttime();
                 feestart = r.getFee();
                 winmode = r.getWinmode();
